@@ -1,0 +1,4 @@
+Verify        REG_XADC_INIT_40           00003400
+Verify        REG_XADC_INIT_41           00000FFF
+Verify        REG_XADC_INIT_42           00006400
+

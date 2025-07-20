@@ -1,0 +1,5 @@
+Write         REG_MAIN_SCRATCH              991B00B5
+Verify        REG_MAIN_BUILD_TIME           23456789
+Verify        REG_MAIN_COMMIT_ID            3456789A
+Verify        REG_MAIN_SCRATCH              991B00B5
+

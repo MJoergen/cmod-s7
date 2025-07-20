@@ -1,0 +1,4 @@
+include regs.in
+include csr.in
+include xadc.in
+
