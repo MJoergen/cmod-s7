@@ -13,6 +13,7 @@ library work;
 
 entity mcu_sim is
   generic (
+    G_PERIOD      : time;
     G_ADDR_SIZE   : integer;
     G_CONFIG_MAX  : natural;
     G_STATS_MAX   : natural;
@@ -41,8 +42,8 @@ architecture simulation of mcu_sim is
 
 begin
 
-  wbus_rst_o <= '1', '0' after 100 ns;
-  wbus_clk   <= running and not wbus_clk after 5 ns;
+  wbus_rst_o <= '1', '0' after G_PERIOD*10;
+  wbus_clk   <= running and not wbus_clk after G_PERIOD/2;
 
   wbus_clk_o <= wbus_clk;
 

@@ -28,7 +28,10 @@ set_property BOARD_PIN usb_uart_rxd                  [get_ports { uart_rx_i }  ]
 # Timing constraints
 ########################
 
-create_clock -add -name sys_clk -period 83.33 [get_ports { sys_clk_i }]; # 12 MHz
+create_clock -add -name sys_clk -period 83.33        [get_ports { sys_clk_i }]; # 12 MHz
+
+set_property IOB TRUE                                [get_ports { uart_rx_i }  ];
+set_property IOB TRUE                                [get_ports { uart_tx_o }  ];
 
 
 ########################

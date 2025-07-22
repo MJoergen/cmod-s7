@@ -1,4 +1,15 @@
-Verify        REG_XADC_INIT_40           00003400
-Verify        REG_XADC_INIT_41           00000FFF
-Verify        REG_XADC_INIT_42           00006400
+Verify        REG_XADC_INIT_40           00008000
+Verify        REG_XADC_INIT_41           0000310F
+Verify        REG_XADC_INIT_42           00000A00
+Verify        REG_XADC_INIT_48           00000100
+
+TbWait        #32
+Verify        REG_XADC_TEMP              00009772 -- 25.0
+
+TbWait        #32
+Verify        REG_XADC_TEMP              0000B5ED -- 85.0
+
+TbWait        #32
+Verify        REG_XADC_TEMP              000094E8 -- 20.0
+
 

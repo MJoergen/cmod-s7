@@ -12,6 +12,7 @@ SRC += $(SRC_DIR)/wbus_drp.vhd
 SRC += $(SRC_DIR)/wbus_drp.vhd
 SRC += $(SRC_DIR)/wbus_mapper.vhd
 SRC += $(SRC_DIR)/wbus_pkg.vhd
+SRC += $(SRC_DIR)/wbus_pwm.vhd
 SRC += $(SRC_DIR)/wbus_xadc.vhd
 
 # List of test specific simulation files

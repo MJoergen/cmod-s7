@@ -2,9 +2,6 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-library xpm;
-  use xpm.vcomponents.xpm_cdc_single;
-
 entity cmod_s7_top is
   generic (
     G_TIMESTAMP : std_logic_vector(31 downto 0); -- Automatically filled out
@@ -34,6 +31,7 @@ architecture synthesis of cmod_s7_top is
   signal rst : std_logic;
 
   signal uart_rx : std_logic;
+  signal uart_tx : std_logic;
 
   signal wbus_addr  : std_logic_vector(15 downto 0); -- lower address bits
   signal wbus_wrdat : std_logic_vector(31 downto 0); -- Write Databus
@@ -58,21 +56,21 @@ begin
 
 
   ---------------------------------------------------------
-  -- Synchronize input signals
+  -- Register I/O signals
   ---------------------------------------------------------
 
-  xpm_cdc_single_inst : component xpm_cdc_single
-    generic map (
-      SRC_INPUT_REG => 0,
-      DEST_SYNC_FF  => 2
-    )
-    port map (
-      src_clk  => '0',
-      src_in   => uart_rx_i,
-      dest_clk => clk,
-      dest_out => uart_rx
-    ); -- xpm_cdc_single_inst
+  reg_proc : process (clk)
+  begin
+    if rising_edge(clk) then
+      uart_rx   <= uart_rx_i;
+      uart_tx_o <= uart_tx;
+    end if;
+  end process reg_proc;
 
+
+  ---------------------------------------------------------
+  -- Instantiate UART command decoder
+  ---------------------------------------------------------
 
   uart_wbus_inst : entity work.uart_wbus
     generic map (
@@ -84,7 +82,7 @@ begin
       clk_i        => clk,
       rst_i        => rst,
       uart_rxd_i   => uart_rx,
-      uart_txd_o   => uart_tx_o,
+      uart_txd_o   => uart_tx,
       wbus_addr_o  => wbus_addr,
       wbus_wrdat_o => wbus_wrdat,
       wbus_we_o    => wbus_we,
@@ -93,6 +91,11 @@ begin
       wbus_rddat_i => wbus_rddat,
       wbus_ack_i   => wbus_ack
     ); -- uart_wbus_inst : entity work.uart_wbus
+
+
+  ---------------------------------------------------------
+  -- Instantiate main part
+  ---------------------------------------------------------
 
   cmod_s7_inst : entity work.cmod_s7
     generic map (

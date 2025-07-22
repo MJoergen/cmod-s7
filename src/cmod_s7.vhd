@@ -35,7 +35,7 @@ end entity cmod_s7;
 
 architecture synthesis of cmod_s7 is
 
-  constant C_NUM_SLAVES : natural := 2;
+  constant C_NUM_SLAVES : natural := 5;
 
   signal   wbus_map_addr  : std_logic_vector(11 downto 0);               -- lower address bits
   signal   wbus_map_wrdat : std_logic_vector(31 downto 0);               -- Write Databus
@@ -50,7 +50,7 @@ begin
   wbus_mapper_inst : entity work.wbus_mapper
     generic map (
       G_TIMEOUT          => 10_000,
-      G_NUM_SLAVES       => 2,
+      G_NUM_SLAVES       => C_NUM_SLAVES,
       G_MASTER_ADDR_SIZE => 16,
       G_SLAVE_ADDR_SIZE  => 12
     )
@@ -87,7 +87,8 @@ begin
       s_wbus_cyc_i   => wbus_map_cyc,
       s_wbus_stb_i   => wbus_map_stb(0),
       s_wbus_rddat_o => wbus_map_rddat(0),
-      s_wbus_ack_o   => wbus_map_ack(0)
+      s_wbus_ack_o   => wbus_map_ack(0),
+      led_o          => led_o
     ); -- wbus_csr_inst : entity work.wbus_csr
 
   wbus_xadc_inst : entity work.wbus_xadc
@@ -103,10 +104,48 @@ begin
       wbus_ack_o   => wbus_map_ack(1)
     ); -- wbus_xadc_inst : entity work.wbus_xadc
 
-  led0_r_o <= '0';
-  led0_g_o <= '0';
-  led0_b_o <= '0';
-  led_o    <= (others => '0');
+
+  wbus_pwm_red_inst : entity work.wbus_pwm
+    port map (
+      clk_i        => clk_i,
+      rst_i        => rst_i,
+      wbus_addr_i  => wbus_map_addr,
+      wbus_wrdat_i => wbus_map_wrdat,
+      wbus_we_i    => wbus_map_we,
+      wbus_cyc_i   => wbus_map_cyc,
+      wbus_stb_i   => wbus_map_stb(2),
+      wbus_rddat_o => wbus_map_rddat(2),
+      wbus_ack_o   => wbus_map_ack(2),
+      pwm_o        => led0_r_o
+    ); -- wbus_pwm_red_inst : entity work.wbus_pwm
+
+  wbus_pwm_green_inst : entity work.wbus_pwm
+    port map (
+      clk_i        => clk_i,
+      rst_i        => rst_i,
+      wbus_addr_i  => wbus_map_addr,
+      wbus_wrdat_i => wbus_map_wrdat,
+      wbus_we_i    => wbus_map_we,
+      wbus_cyc_i   => wbus_map_cyc,
+      wbus_stb_i   => wbus_map_stb(3),
+      wbus_rddat_o => wbus_map_rddat(3),
+      wbus_ack_o   => wbus_map_ack(3),
+      pwm_o        => led0_g_o
+    ); -- wbus_pwm_green_inst : entity work.wbus_pwm
+
+  wbus_pwm_blue_inst : entity work.wbus_pwm
+    port map (
+      clk_i        => clk_i,
+      rst_i        => rst_i,
+      wbus_addr_i  => wbus_map_addr,
+      wbus_wrdat_i => wbus_map_wrdat,
+      wbus_we_i    => wbus_map_we,
+      wbus_cyc_i   => wbus_map_cyc,
+      wbus_stb_i   => wbus_map_stb(4),
+      wbus_rddat_o => wbus_map_rddat(4),
+      wbus_ack_o   => wbus_map_ack(4),
+      pwm_o        => led0_b_o
+    ); -- wbus_pwm_blue_inst : entity work.wbus_pwm
 
 end architecture synthesis;
 

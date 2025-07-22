@@ -52,6 +52,7 @@ begin
 
   mcu_sim_inst : entity work.mcu_sim
     generic map (
+      G_PERIOD      => 17.361 ns,    -- 57.6 MHz
       G_ADDR_SIZE   => C_MAIN_ADDR_SIZE,
       G_CONFIG_MAX  => C_CONFIG_MAX,
       G_STATS_MAX   => C_STATS_MAX,

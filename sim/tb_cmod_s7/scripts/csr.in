@@ -1,5 +1,10 @@
-Write         REG_MAIN_SCRATCH              991B00B5
-Verify        REG_MAIN_BUILD_TIME           23456789
-Verify        REG_MAIN_COMMIT_ID            3456789A
-Verify        REG_MAIN_SCRATCH              991B00B5
+Write         REG_CSR_SCRATCH              991B00B5
+Verify        REG_CSR_BUILD_TIME           23456789
+Verify        REG_CSR_COMMIT_ID            3456789A
+Verify        REG_CSR_SCRATCH              991B00B5
+Verify        REG_CSR_LED                  00000000
+TbVerifyStats 0 00000000
+
+Write         REG_CSR_LED                  0000000F
+TbVerifyStats 0 0000000F
 
